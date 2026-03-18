@@ -1,53 +1,64 @@
 import React, { useState } from 'react';
-import './BudgetTracker.css';
+;
 
 function BudgetTracker() {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState([]);
-  const [newExpense, setNewExpense] = useState({ name: '', amount: 0 });
+  const [newExpense, setNewExpense] = useState('');
+  const [newAmount, setNewAmount] = useState(0);
 
   const handleAddExpense = () => {
-    setExpenses([...expenses, newExpense]);
-    setNewExpense({ name: '', amount: 0 });
+    if (newExpense && newAmount) {
+      setExpenses([...expenses, { name: newExpense, amount: newAmount }]);
+      setNewExpense('');
+      setNewAmount(0);
+    }
   };
 
   const handleRemoveExpense = (index) => {
     setExpenses(expenses.filter((expense, i) => i !== index));
   };
 
-  const handleUpdateExpense = (index, updatedExpense) => {
-    setExpenses(expenses.map((expense, i) => i === index ? updatedExpense : expense));
+  const handleUpdateIncome = (e) => {
+    setIncome(e.target.value);
   };
 
   return (
-    <div className="budget-tracker">
-      <h1>Budget Tracker</h1>
-      <div className="income">
+    <div className="budget-tracker-container">
+      <h2>Budget Tracker</h2>
+      <div className="income-container">
         <label>Income:</label>
-        <input type="number" value={income} onChange={(e) => setIncome(e.target.value)} />
+        <input type="number" value={income} onChange={handleUpdateIncome} />
       </div>
-      <div className="expenses">
-        <h2>Expenses:</h2>
+      <div className="expenses-container">
+        <h3>Expenses:</h3>
         <ul>
           {expenses.map((expense, index) => (
             <li key={index}>
-              <span>{expense.name}</span>
-              <span>${expense.amount}</span>
+              {expense.name}: ${expense.amount}
               <button onClick={() => handleRemoveExpense(index)}>Remove</button>
-              <button onClick={() => handleUpdateExpense(index, { name: 'Updated Expense', amount: 100 })}>Update</button>
             </li>
           ))}
         </ul>
-        <div className="new-expense">
-          <label>New Expense:</label>
-          <input type="text" value={newExpense.name} onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })} />
-          <input type="number" value={newExpense.amount} onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })} />
-          <button onClick={handleAddExpense}>Add</button>
+        <div className="new-expense-container">
+          <input
+            type="text"
+            value={newExpense}
+            onChange={(e) => setNewExpense(e.target.value)}
+            placeholder="New Expense"
+          />
+          <input
+            type="number"
+            value={newAmount}
+            onChange={(e) => setNewAmount(e.target.value)}
+            placeholder="Amount"
+          />
+          <button onClick={handleAddExpense}>Add Expense</button>
         </div>
       </div>
-      <div className="balance">
-        <h2>Balance:</h2>
-        <span>${income - expenses.reduce((acc, expense) => acc + expense.amount, 0)}</span>
+      <div className="balance-container">
+        <h3>Balance:</h3>
+        <p>${income - expenses.reduce((acc, curr) => acc + curr.amount, 0)}</p>
       </div>
     </div>
   );
