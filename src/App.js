@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import BudgetTracker from './components/BudgetTracker';
-import './App.css';
+import './index.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<BudgetTracker />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="app-container">
+      <h1>Build Me A Budget Tracker React App</h1>
+      <BudgetTracker />
+    </div>
   );
 }
 
